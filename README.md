@@ -1,2 +1,2 @@
 # PSY6422 Project
-Looking at how test preparation effects student test scores
+Visualising High School student test scores taking into account level of preparation
