@@ -1,0 +1,65 @@
+---
+title: "PSY6422"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(ggplot2)
+```
+
+## Data Origins
+
+The data set was retrieved from  [Kaggle](https://www.kaggle.com/spscientist/students-performance-in-exams), published by a user named 'Jakki'.
+
+It contains *math, reading and writing* marks secured by High School students in the **United States of America** along with a range of variables;
+sex, race/ethnicity, parent's level of education, lunch and if they took part in a test preparation course... *very self explanatory* 
+
+No other **specifics** have been stated regarding the data and its origins.
+
+```{r, echo=TRUE}
+df <- read.csv("StudentsPerformance.csv", header = TRUE, sep = ',') #load data
+head(df,5) #show first 5 rows of raw data
+summary(df) #show summary of all raw data
+```
+
+## Research Question
+
+I will be looking at the differences between these scores in terms of the sex of the student, particulary which students prepared for the tests and what the outcome of this was in terms of average score. Average score was taken rather than maths, reading and writing separately as it was not specificied as to whether the preparation course was in relation to a specific topic.
+
+## Data Preparation
+
+
+```{r, echo=TRUE}
+
+namesOfColumns <- c("sex", "race_ethnicity", "parent_lvl_education", "lunch", "test_prep","math","reading","writing")
+colnames(df) <- namesOfColumns #change column names
+df$avg_score=rowMeans(df[,c(6,7,8)]) #create column for average of math, reading and writing score
+head(df,5) # show first 5 rows of processed data
+summary(df) #summaried processed data
+```
+
+## Visualisation
+
+```{r, echo=TRUE}
+ylab <- 'Average score across tests'
+xlab <- 'Sex of student'
+colbp <-ggplot(df, aes(x=sex, y=avg_score, colour=test_prep )) + xlab(xlab) + ylab(ylab) + geom_boxplot() +
+geom_jitter(position=position_jitter(0.2), size=0.4) +ggtitle('Distribution of female and male student average test scores noting for test preparation')
+colbp
+```
+
+
+## Summary
+
+Issue with the data set is that it is *vague* in many ways, from the origin to details of the **data itself**
+
+In terms of averaged out scores, test preparation is handy... *no suprise* and females and males are similar in their preparation actions, in the case of this data set at least.
+
+To further this anaysis, other variables should be looked into, such as the effect (if there is one) of Parental level of education.
